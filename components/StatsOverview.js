@@ -10,8 +10,14 @@ export default function StatsOverview({ listeningStats }) {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div className="bg-gradient-to-br from-green-600 to-green-700 p-4 sm:p-6 rounded-xl shadow-lg">
-                <h3 className="text-xs sm:text-sm font-semibold text-green-100 mb-2">Total Listening Time</h3>
+                <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xs sm:text-sm font-semibold text-green-100">Estimated Listening Time</h3>
+                    <span className="text-xs text-green-100/70">est.</span>
+                </div>
                 <p className="text-2xl sm:text-3xl font-bold">{formatDuration(listeningStats.totalListeningTime)}</p>
+                {listeningStats.sampleSizeRecentlyPlayed > 0 && (
+                    <p className="text-xs text-green-100/70 mt-2">Based on {listeningStats.sampleSizeRecentlyPlayed} recent tracks</p>
+                )}
             </div>
             <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-4 sm:p-6 rounded-xl shadow-lg">
                 <h3 className="text-xs sm:text-sm font-semibold text-purple-100 mb-2">Top Tracks</h3>
