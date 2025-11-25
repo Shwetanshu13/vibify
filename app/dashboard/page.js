@@ -129,7 +129,7 @@ export default function Dashboard() {
             <DashboardHeader userData={userData} onLogout={handleLogout} />
             <TimeRangeFilter timeRange={timeRange} onTimeRangeChange={setTimeRange} />
 
-            <main className="max-w-7xl mx-auto px-6 py-8">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
                 <StatsOverview listeningStats={listeningStats} />
                 <TopArtists artists={topArtists} />
                 <TopTracks tracks={topTracks} />

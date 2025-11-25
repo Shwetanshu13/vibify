@@ -1,36 +1,180 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎵 VibiFy
 
-## Getting Started
+**VibiFy** is a beautiful, modern web application that visualizes your Spotify listening habits. Discover your top artists, tracks, playlists, and detailed listening statistics with an elegant dark-mode interface.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC?style=flat-square&logo=tailwind-css)
+
+## ✨ Features
+
+- 🎨 **Beautiful Dark Mode UI** - Sleek, modern interface with smooth animations
+- 📊 **Listening Statistics** - View total listening time, track counts, and genre diversity
+- 🎤 **Top Artists** - See your most-played artists with rankings
+- 🎵 **Top Tracks** - Discover your favorite songs across different time periods
+- ⏱️ **Recently Played** - Track your recent listening history
+- 📚 **Playlists Overview** - Quick access to all your Spotify playlists
+- ⏰ **Time Range Filters** - Switch between Last 4 Weeks, Last 6 Months, or All Time
+- 📱 **Fully Responsive** - Perfect experience on mobile, tablet, and desktop
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- A Spotify Developer Account
+- pnpm, npm, or yarn package manager
+
+### 1. Clone the Repository
 
 ```bash
+git clone https://github.com/yourusername/vibify.git
+cd vibify
+```
+
+### 2. Install Dependencies
+
+```bash
+pnpm install
+# or
+npm install
+# or
+yarn install
+```
+
+### 3. Set Up Spotify API
+
+1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Create a new app
+3. Note your **Client ID** and **Client Secret**
+4. Add `http://localhost:3000/callback` to your Redirect URIs
+
+### 4. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+CLIENT_ID=your_spotify_client_id
+CLIENT_SECRET=your_spotify_client_secret
+REDIRECT_URI=http://localhost:3000/callback
+```
+
+### 5. Run the Development Server
+
+```bash
+pnpm dev
+# or
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see VibiFy in action! 🎉
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🏗️ Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+vibify/
+├── app/
+│   ├── api/
+│   │   ├── callback/      # OAuth callback handler
+│   │   └── login/         # Spotify login endpoint
+│   ├── callback/          # Callback page component
+│   ├── dashboard/         # Main dashboard page
+│   ├── layout.js          # Root layout
+│   ├── page.js            # Landing page
+│   └── globals.css        # Global styles
+├── components/
+│   ├── DashboardHeader.js # Header with user info
+│   ├── TimeRangeFilter.js # Time period selector
+│   ├── StatsOverview.js   # Statistics cards
+│   ├── TopArtists.js      # Top artists grid
+│   ├── TopTracks.js       # Top tracks list
+│   ├── RecentlyPlayed.js  # Recent tracks
+│   ├── Playlists.js       # Playlists grid
+│   ├── LoadingSpinner.js  # Loading state
+│   └── index.js           # Component exports
+└── public/                # Static assets
+```
 
-## Learn More
+## 🎯 Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Login** - Click "Login with Spotify" on the landing page
+2. **Authorize** - Grant VibiFy access to your Spotify data
+3. **Explore** - View your personalized music dashboard
+4. **Filter** - Switch between different time ranges to see how your taste evolves
+5. **Discover** - Click on playlists to open them in Spotify
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Built With
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **[Next.js 16](https://nextjs.org/)** - React framework with App Router
+- **[React 18](https://react.dev/)** - UI library
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Spotify Web API](https://developer.spotify.com/documentation/web-api)** - Music data source
 
-## Deploy on Vercel
+## 📱 Responsive Design
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+VibiFy is fully responsive and optimized for:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📱 Mobile devices (320px and up)
+- 📱 Tablets (768px and up)
+- 💻 Desktop (1024px and up)
+- 🖥️ Large screens (1280px and up)
+
+## 🔒 Privacy & Security
+
+- All authentication is handled through Spotify's OAuth 2.0
+- Access tokens are stored locally in your browser
+- No user data is stored on any server
+- All API requests are made directly to Spotify's servers
+
+## 🚀 Deployment
+
+### Deploy on Vercel
+
+The easiest way to deploy VibiFy is using [Vercel](https://vercel.com):
+
+1. Push your code to GitHub
+2. Import your repository on Vercel
+3. Add your environment variables in Vercel dashboard
+4. Update your Spotify app's Redirect URI to your production URL
+5. Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+### Other Platforms
+
+VibiFy can be deployed on any platform that supports Next.js:
+
+- Netlify
+- Railway
+- Render
+- AWS Amplify
+
+Remember to update your Redirect URI and environment variables!
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+- Report bugs
+- Suggest new features
+- Submit pull requests
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Spotify for their excellent Web API
+- Next.js team for the amazing framework
+- The open-source community
+
+## 📧 Contact
+
+Have questions or suggestions? Feel free to reach out!
+
+---
+
+Made with ❤️ and 🎵 by VibiFy

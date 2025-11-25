@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Spotify Helper",
-  description: "Connect and manage your Spotify account",
+  title: "VibiFy - Your Spotify Stats Dashboard",
+  description: "Discover your music taste with VibiFy. View your top artists, tracks, playlists, and listening statistics from Spotify.",
 };
 
 export default function RootLayout({ children }) {

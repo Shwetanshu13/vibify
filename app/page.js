@@ -1,12 +1,12 @@
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-400 to-blue-500">
-      <main className="flex flex-col items-center justify-center gap-8 p-8">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-white mb-4">
-            Spotify Helper
+      <main className="flex flex-col items-center justify-center gap-8 p-4 sm:p-8">
+        <div className="text-center px-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
+            VibiFy
           </h1>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-lg sm:text-xl text-white/90 mb-8">
             Connect your Spotify account to get started
           </p>
         </div>
