@@ -99,7 +99,7 @@ export default function Dashboard() {
     };
 
     const calculateListeningStats = (tracks, artists, recentlyPlayed, timeRange) => {
-        // total duration of top tracks (informational only)
+        // total duration of top tracks
         const totalDurationTop = tracks.reduce((sum, track) => sum + (track.duration_ms || 0), 0);
 
         // collect unique genres
@@ -108,44 +108,63 @@ export default function Dashboard() {
             (artist.genres || []).forEach(genre => genres.add(genre));
         });
 
-        // Estimate listening time based on recently played sample
+        // Estimate listening time
         let estimatedMs = 0;
+        let useRecentPlays = false;
+
         try {
-            if (recentlyPlayed && recentlyPlayed.length > 0) {
+            if (recentlyPlayed && recentlyPlayed.length >= 10) {
                 const timestamps = recentlyPlayed
-                    .map(item => new Date(item.played_at).getTime())
-                    .filter(Boolean)
+                    .map(item => item.played_at ? new Date(item.played_at).getTime() : null)
+                    .filter(t => t !== null && !isNaN(t))
                     .sort((a, b) => a - b);
 
-                const recentTotalMs = recentlyPlayed.reduce((s, it) => s + (it.track?.duration_ms || 0), 0);
-                const earliest = timestamps[0];
-                const latest = timestamps[timestamps.length - 1] || earliest;
-                const timeSpanDays = Math.max(1, (latest - earliest) / (1000 * 60 * 60 * 24));
+                if (timestamps.length >= 10) {
+                    const recentTotalMs = recentlyPlayed.reduce((s, it) => s + (it.track?.duration_ms || 0), 0);
+                    const earliest = timestamps[0];
+                    const latest = timestamps[timestamps.length - 1];
+                    const timeSpanHours = Math.max(1, (latest - earliest) / (1000 * 60 * 60));
 
-                const avgMsPerDay = recentTotalMs / timeSpanDays;
+                    // Only use recent plays if we have at least 12 hours of data
+                    if (timeSpanHours >= 12) {
+                        const avgMsPerHour = recentTotalMs / timeSpanHours;
 
-                const daysMap = {
-                    short_term: 28,
-                    medium_term: 182,
-                    long_term: 365
+                        const hoursMap = {
+                            short_term: 28 * 24,      // 4 weeks
+                            medium_term: 182 * 24,    // 6 months
+                            long_term: 365 * 24       // 1 year
+                        };
+
+                        const hours = hoursMap[timeRange] || hoursMap['medium_term'];
+                        estimatedMs = avgMsPerHour * hours;
+                        useRecentPlays = true;
+                    }
+                }
+            }
+
+            // Fallback: use a multiplier on top tracks duration
+            if (!useRecentPlays && totalDurationTop > 0) {
+                const multipliers = {
+                    short_term: 3,      // assume each top track played ~3 times in 4 weeks
+                    medium_term: 8,     // assume ~8 times in 6 months
+                    long_term: 15       // assume ~15 times over all time
                 };
-
-                const days = daysMap[timeRange] || daysMap['medium_term'];
-                estimatedMs = avgMsPerDay * days;
+                estimatedMs = totalDurationTop * (multipliers[timeRange] || 5);
             }
         } catch (e) {
             console.warn('Error estimating listening time:', e);
-            estimatedMs = 0;
+            // Ultimate fallback
+            estimatedMs = totalDurationTop * 5;
         }
 
         return {
-            // Note: this is an ESTIMATE based on recent plays, not a precise historical total
             totalListeningTime: Math.round(estimatedMs),
             totalTracks: tracks.length,
             totalArtists: artists.length,
             uniqueGenres: genres.size,
             avgTrackDuration: tracks.length > 0 ? totalDurationTop / tracks.length : 0,
-            sampleSizeRecentlyPlayed: recentlyPlayed?.length || 0
+            sampleSizeRecentlyPlayed: recentlyPlayed?.length || 0,
+            estimationMethod: useRecentPlays ? 'recent' : 'multiplier'
         };
     };
 
@@ -167,8 +186,8 @@ export default function Dashboard() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
                 <StatsOverview listeningStats={listeningStats} />
                 <TopArtists artists={topArtists} />
-                <TopTracks tracks={topTracks} />
-                <RecentlyPlayed items={recentlyPlayed} />
+                <TopTracks tracks={topTracks.slice(0, 20)} />
+                <RecentlyPlayed items={recentlyPlayed.slice(0, 10)} />
                 <Playlists playlists={playlists} />
             </main>
         </div>
